@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>キャラ選択 - オシフレ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="select.css">
+  <script src="select.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <h1 class="title">キャラを選択</h1>
 
+    <!-- 上段：推しキャラ -->
+    <section>
+      <h2 class="section-title">推しキャラを選択</h2>
+      <div class="char-list" id="fanList">
+        <!-- JSで動的生成 or ここに静的に配置してもOK -->
+        <div class="char-card" data-id="fan1">
+          <img src="images/fan1.jpg" alt="推し1">
+          <p>推し1</p>
+        </div>
+        <div class="char-card" data-id="fan2">
+          <img src="images/fan2.jpg" alt="推し2">
+          <p>推し2</p>
+        </div>
+        <div class="char-card" data-id="fan3">
+          <img src="images/fan3.jpg" alt="推し3">
+          <p>推し3</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 下段：人格キャラ -->
+    <section>
+      <h2 class="section-title">人格キャラを選択</h2>
+      <div class="char-list" id="personaList">
+        <div class="char-card" data-id="personaA">
+          <img src="images/personaA.jpg" alt="人格A">
+          <p>人格A</p>
+        </div>
+        <div class="char-card" data-id="personaB">
+          <img src="images/personaB.jpg" alt="人格B">
+          <p>人格B</p>
+        </div>
+        <div class="char-card" data-id="personaC">
+          <img src="images/personaC.jpg" alt="人格C">
+          <p>人格C</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 決定ボタン -->
+    <button id="confirmBtn" class="confirm-btn" disabled>決定して写真投稿へ</button>
+  </main>
+</body>
+</html>
