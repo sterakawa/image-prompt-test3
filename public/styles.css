@@ -1,0 +1,250 @@
+/* =====================
+   基本レイアウト
+===================== */
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  background: #f8f8f8;
+  color: #333;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* 固定プロンプト */
+.fixed-prompts {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.fixed-prompts div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fixed-prompts label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* =====================
+   感情ボタン
+===================== */
+.emotions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.emotion-btn {
+  font-size: 1.5rem;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.emotion-btn:hover {
+  background: #f0f0f0;
+}
+
+.emotion-btn.selected {
+  background: #007bff;
+  color: #fff;
+  border-color: #0056b3;
+}
+
+/* =====================
+   入力フィールド
+===================== */
+input[type="text"],
+input[type="number"],
+select {
+  padding: 6px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  width: 250px;
+  box-sizing: border-box;
+}
+
+/* =====================
+   ボタン
+===================== */
+button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* =====================
+   ローディング表示
+===================== */
+.loading {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+/* =====================
+   結果カード
+===================== */
+.result-card {
+  background: white;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+}
+
+/* =====================
+   履歴カード
+===================== */
+.history-item {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: #fafafa;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.history-item p,
+.history-item h4 {
+  margin: 0;
+  padding: 1px 0;
+}
+
+.history-item button {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.history-item button:hover {
+  background: #c0392b;
+}
+
+/* 履歴全体の result-card スタイルリセット */
+#historyResult.result-card {
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  background: none;
+}
+
+/* =====================
+   エラーメッセージ
+===================== */
+.error-message {
+  color: #b00020;
+  background: #ffecec;
+  border: 1px solid #f5c2c2;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+#errorMessage button {
+  background: #ff6666;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#errorMessage button:hover {
+  background: #e05555;
+}
+
+/* =====================
+   ユーザーテスト画面リンク
+===================== */
+.link-to-user {
+  margin-top: 10px;
+  text-align:  left;
+}
+
+.user-link-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #007bff;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.user-link-btn:hover {
+  background: #0056b3;
+}
+
+/* =====================
+   レスポンシブ対応
+===================== */
+@media (max-width: 768px) {
+  .fixed-prompts {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  textarea,
+  input[type="text"],
+  input[type="number"],
+  select {
+    width: 100%;
+  }
+
+  .emotions {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .emotion-btn {
+    flex: 1 1 22%;
+    min-width: 60px;
+    font-size: 1.4rem;
+    padding: 6px;
+  }
+}
