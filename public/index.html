@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>画像＋プロンプト比較検証</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <h1>画像＋プロンプト比較検証</h1>
 
+  <!-- 人格プロンプト -->
+  <div class="fixed-prompts">
+    <div>
+      <label>人格プロンプト A</label>
+      <textarea id="personaPromptA" rows="3" placeholder="例：坂本龍馬として話してください"></textarea>
+    </div>
+    <div>
+      <label>人格プロンプト B</label>
+      <textarea id="personaPromptB" rows="3" placeholder="例：勝海舟として話してください"></textarea>
+    </div>
+  </div>
+
+  <!-- 共通ルールプロンプト -->
+  <div class="fixed-prompts">
+    <div style="flex: 1 1 100%;">
+      <label>ルールプロンプト（共通）</label>
+      <textarea id="rulePrompt" rows="3" placeholder="例：200トークン以内で、土佐のグルメにも触れてください"></textarea>
+    </div>
+  </div>
+
+  <!-- 投稿者名 -->
+  <label for="username">投稿者名</label>
+  <input type="text" id="username" placeholder="名前を入力"><br><br>
+
+  <!-- 入力プロンプト -->
+  <label>入力プロンプト</label>
+  <textarea id="promptInput" rows="3" placeholder="例：この写真について意見をください。"></textarea><br><br>
+
+  <!-- 感情ボタン -->
+  <label>感情（写真撮影時の気持ち）</label>
+  <div class="emotions">
+    <button class="emotion-btn" data-emotion="楽しい">😊</button>
+    <button class="emotion-btn" data-emotion="悲しい">😢</button>
+    <button class="emotion-btn" data-emotion="嬉しい">😁</button>
+    <button class="emotion-btn" data-emotion="安らぎ">😌</button>
+    <button class="emotion-btn" data-emotion="尊い">😇</button>
+    <button class="emotion-btn" data-emotion="怒っている">😡</button>
+    <button class="emotion-btn" data-emotion="恥ずかしい">😳</button>
+    <button class="emotion-btn" data-emotion="驚いた">😱</button>
+  </div><br>
+
+  <!-- 画像アップロード -->
+  <label>画像を選択</label>
+  <input type="file" id="imageInput" accept="image/*"><br><br>
+  
+<!-- ユーザーテスト画面リンク -->
+  <div class="link-to-user">
+    <a href="user.html" class="user-link-btn">ユーザーテスト画面へ</a>
+  </div>
+  <br>
+  <!-- パラメータ入力 -->
+  <label>Temperature</label>
+  <input type="number" id="temperature" step="0.1" value="0.7" min="0" max="2">
+  <span>(0＝安定, 2＝創造的)</span><br>
+
+  <label>Max Tokens</label>
+  <input type="number" id="maxTokens" value="200" min="50" max="500">
+  <span>(出力最大長)</span><br>
+
+  <label>top_p</label>
+  <input type="number" id="topP" step="0.1" value="0.6" min="0.1" max="1.0">
+  <span>(0.1〜1.0, 低いと単調・高いと自由)</span><br>
+
+  <!-- 履歴参照チェック -->
+  <label>
+    <input type="checkbox" id="useHistory" checked>
+    履歴を参照する
+  </label><br>
+
+  <!-- 履歴参照件数 -->
+  <label>履歴参照件数</label>
+  <input type="number" id="historyCount" value="3" min="1" max="10">
+  <span>(1〜10件)</span><br>
+
+  <label>モデル選択</label>
+  <select id="model">
+    <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+    <option value="gpt-4.1">gpt-4.1</option>
+  </select><br><br>
+
+  <!-- ボタン -->
+  <button id="compareBtn" type="button">比較送信</button>
+  <button id="resetBtn" type="button">リセット</button>
+
+  <!-- 送信中表示 -->
+  <div id="loading" class="loading" style="display:none;">送信中...</div>
+
+  <!-- 結果 -->
+  <h2>結果</h2>
+  <div id="resultA" class="result-card">結果A: 応答がありません</div>
+  <div id="resultB" class="result-card">結果B: 応答がありません</div>
+
+  <!-- 履歴表示 -->
+  <h2>履歴</h2>
+  <div id="historyResult" class="result-card"></div>
+
+</body>
+</html>
