@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>フォトコメント投稿</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="post.css?v=3">
+  <link rel="stylesheet" href="post.css">
 
-  <!-- html2canvas -->
+  <!-- html2canvas を先に読み込む -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- post.js -->
   <script src="post.js" defer></script>
 
-  <style>.hidden{display:none;}</style>
+  <style>
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
   <main class="container">
@@ -23,7 +27,6 @@
         <h3 class="profile-name"></h3>
         <p class="profile-desc"></p>
       </div>
-      <!-- キャラ変更ボタン -->
       <button id="changeCharaBtn" class="change-chara-btn">キャラ変更</button>
     </div>
 
@@ -34,7 +37,7 @@
         <div id="previewArea" class="preview">写真をアップロード</div>
       </label>
 
-      <!-- コメントバブル -->
+      <!-- 生成コメント -->
       <div id="resultBubbleA" class="bubble bubble-a hidden">
         <p class="comment"></p>
       </div>
@@ -57,11 +60,11 @@
       </div>
     </div>
 
-    <!-- 入力 -->
+    <!-- 入力フォーム -->
     <input type="text" id="username" placeholder="名前（任意）">
     <textarea id="userComment" rows="2" placeholder="コメントを書く（任意）"></textarea>
 
-    <!-- 送信・共有 -->
+    <!-- 送信・共有ボタン -->
     <div class="button-row">
       <button id="sendBtn" class="send-btn">送信</button>
       <button id="shareBtn" class="share-btn">共有</button>
@@ -69,12 +72,15 @@
 
   </main>
 
-  <!-- A/B切替（Bはアイコン表示） -->
+  <!-- A/B切替ボタン（アイコン表示） -->
   <div class="ab-toggle">
-    <button id="switchA" class="toggle-btn active"></button>
-    <button id="switchB" class="toggle-btn"></button>
+    <button id="switchA" class="toggle-btn active">
+      <img id="iconA" src="" alt="Aキャラ">
+    </button>
+    <button id="switchB" class="toggle-btn">
+      <img id="iconB" src="" alt="Bキャラ">
+    </button>
   </div>
-
   <div id="fadeOverlay"></div>
 </body>
 </html>
