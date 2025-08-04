@@ -11,25 +11,24 @@
   display: none;
 }
 
-/* キャラカード（縦長でコンパクト） */
+/* キャラカード（縦長＆枠なし） */
 .character {
-  flex: 0 0 calc(40% - 8px); /* スマホ: 2.5個見える */
-  background: #fff;
-  border: 2px solid #ccc;
+  flex: 0 0 calc(40% - 8px); /* スマホ: 2.5個表示相当 */
+  background: transparent;   /* 背景と枠を透明に */
+  border: none;              /* 枠削除 */
   border-radius: 12px;
-  padding: 8px;
+  padding: 8px 0;
   text-align: center;
-  transition: border 0.2s, background 0.2s;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* 角丸正方形アイコン */
+/* 角丸正方形アイコン（大きめ） */
 .character img {
-  width: 100px;
-  height: 100px;
+  width: 120px;     /* 写真サイズ拡大 */
+  height: 120px;
   border-radius: 16px;
   object-fit: cover;
   margin-bottom: 8px;
@@ -41,20 +40,21 @@
   font-size: 14px;
 }
 
-/* 選択状態 */
+/* 選択状態（背景に色だけ付与） */
 .character.selected {
-  border: 2px solid #2196f3;
   background: #e3f2fd;
+  border-radius: 16px;
+  padding: 8px;
 }
 
-/* PC: 3個表示 */
+/* PC時: 3個表示 */
 @media (min-width: 768px) {
   .character {
     flex: 0 0 calc(30% - 8px);
   }
 
   .character img {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
 }
