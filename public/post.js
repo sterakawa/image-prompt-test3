@@ -133,16 +133,21 @@ async function sendData() {
     model: "gpt-4.1-mini"
   };
 
+  // --- 送信中UI ---
   const sendBtn = document.getElementById("sendBtn");
   sendBtn.disabled = true;
   sendBtn.textContent = "送信中…";
 
   const bubbleA = document.getElementById("resultBubbleA");
   const bubbleB = document.getElementById("resultBubbleB");
+
+  // バブルを表示＆ローディングエフェクト適用
   bubbleA.classList.remove("hidden");
   bubbleB.classList.remove("hidden");
   bubbleA.classList.add("loading");
   bubbleB.classList.add("loading");
+
+  // コメント部分を空にする
   bubbleA.querySelector(".comment").textContent = "";
   bubbleB.querySelector(".comment").textContent = "";
 
@@ -161,6 +166,7 @@ async function sendData() {
     bubbleA.querySelector(".comment").textContent = "エラーが発生しました";
     bubbleB.querySelector(".comment").textContent = "エラーが発生しました";
   } finally {
+    // ローディング解除
     bubbleA.classList.remove("loading");
     bubbleB.classList.remove("loading");
     sendBtn.disabled = false;
@@ -168,7 +174,6 @@ async function sendData() {
     switchMode(currentMode);
   }
 }
-
 // ===============================
 // 画像プレビュー
 // ===============================
