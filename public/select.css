@@ -136,3 +136,8 @@ h2 {
   border-color: #fff transparent transparent transparent;
   filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
 }
+.character img {
+  -webkit-touch-callout: none; /* 長押しメニュー無効化（iOS） */
+  -webkit-user-select: none;
+  user-select: none;
+}
