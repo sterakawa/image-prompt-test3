@@ -1,52 +1,23 @@
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  margin: 0;
-  padding: 16px;
-  background: #fafafa;
-  color: #333;
-}
-
-h1 {
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: 1.2rem;
-  margin: 20px 0 10px;
-}
-
-/* 横スクロール行 */
-.character-grid {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 8px 0;
-  scrollbar-width: none; /* Firefoxスクロールバー非表示 */
-}
-.character-grid::-webkit-scrollbar {
-  display: none; /* Chrome/Safariスクロールバー非表示 */
-}
-
-/* キャラカード（丸アイコン対応） */
+/* キャラカード */
 .character {
-  flex: 0 0 calc(40% - 8px); /* スマホ時: 2.5個表示相当 */
+  flex: 0 0 calc(40% - 8px); /* スマホ: 2.5個表示 */
   background: #fff;
   border: 2px solid #ccc;
   border-radius: 12px;
-  padding: 12px 8px;
+  padding: 8px;
   text-align: center;
   transition: border 0.2s, background 0.2s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 丸型アイコン */
+/* 角丸正方形アイコン */
 .character img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 16px;  /* 角丸に変更 */
   object-fit: cover;
   margin-bottom: 8px;
 }
@@ -63,33 +34,14 @@ h2 {
   background: #e3f2fd;
 }
 
-/* PC時: 3個表示 */
+/* PC: 3個表示 */
 @media (min-width: 768px) {
   .character {
-    flex: 0 0 calc(30% - 8px); /* 3個表示 */
+    flex: 0 0 calc(30% - 8px);
   }
 
   .character img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
-}
-
-/* 次へボタン */
-.next-btn {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin-top: 24px;
-  background: #2196f3;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.next-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
 }
