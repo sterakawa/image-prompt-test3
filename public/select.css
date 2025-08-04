@@ -1,10 +1,30 @@
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  margin: 0;
+  padding: 16px;
+  background: #fafafa;
+  color: #333;
+}
+
+h1 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 20px 0 10px;
+}
+
+/* 横スクロール行 */
 .character-grid {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding: 8px 0;
-  scrollbar-width: none; /* Firefox用スクロールバー非表示 */
+  scrollbar-width: none; /* Firefoxスクロールバー非表示 */
 }
 .character-grid::-webkit-scrollbar {
   display: none; /* Chrome/Safariスクロールバー非表示 */
@@ -15,19 +35,29 @@
   flex: 0 0 calc(40% - 8px); /* スマホ時: 2.5個表示相当 */
   background: #fff;
   border: 2px solid #ccc;
-  border-radius: 8px;
-  padding: 8px;
+  border-radius: 12px;
+  padding: 12px 8px;
   text-align: center;
   transition: border 0.2s, background 0.2s;
+  cursor: pointer;
 }
+
+/* 丸型アイコン */
 .character img {
-  width: 100%;
-  border-radius: 8px;
+  width: 80px;      
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
 }
+
+/* 名前 */
 .character p {
-  margin: 6px 0 0;
+  margin: 0;
   font-size: 14px;
 }
+
+/* 選択状態 */
 .character.selected {
   border: 2px solid #2196f3;
   background: #e3f2fd;
@@ -36,6 +66,30 @@
 /* PC時: 3個表示 */
 @media (min-width: 768px) {
   .character {
-    flex: 0 0 calc(30% - 8px); /* 3個＋隙間で2.5個程度 */
+    flex: 0 0 calc(30% - 8px); /* 3個表示 */
   }
+
+  .character img {
+    width: 100px; 
+    height: 100px;
+  }
+}
+
+/* 次へボタン */
+.next-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 24px;
+  background: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.next-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
