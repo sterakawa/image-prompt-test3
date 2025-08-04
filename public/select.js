@@ -32,6 +32,9 @@ function renderCharaList(type, list, container) {
       <p>${chara.name}</p>
     `;
 
+    // 右クリック・長押しメニュー無効化
+    card.addEventListener("contextmenu", (e) => e.preventDefault());
+
     // 選択処理
     card.addEventListener("click", () => {
       container.querySelectorAll(".character").forEach(c => c.classList.remove("selected"));
@@ -40,7 +43,7 @@ function renderCharaList(type, list, container) {
       updateNextButton();
     });
 
-    // --- 長押しでプロフィール吹き出し ---
+    // ===== 吹き出し制御 =====
     let holdTimer;
     let bubble;
     let isHolding = false;
@@ -52,30 +55,30 @@ function renderCharaList(type, list, container) {
       bubble.innerHTML = `<strong>${chara.name}</strong><br>${chara.desc}`;
       document.body.appendChild(bubble);
 
-      // 位置計算（カード中央上）
+      // 位置計算
       const rect = card.getBoundingClientRect();
       const bubbleWidth = bubble.offsetWidth;
       const bubbleHeight = bubble.offsetHeight;
-
       bubble.style.left = `${rect.left + rect.width / 2 - bubbleWidth / 2}px`;
       bubble.style.top = `${rect.top - bubbleHeight - 10}px`;
     };
 
     const hideBubble = () => {
-      clearTimeout(holdTimer);
       removeBubble();
       isHolding = false;
     };
 
-    // PC: 長押しは不要、クリックで即表示→離すと消す
+    // PC: 長押し代替（mousedown）
     card.addEventListener("mousedown", () => {
-      showBubble();
-      isHolding = true;
+      holdTimer = setTimeout(() => {
+        showBubble();
+        isHolding = true;
+      }, 500);
     });
     card.addEventListener("mouseup", hideBubble);
     card.addEventListener("mouseleave", hideBubble);
 
-    // スマホ: 長押し判定（500ms）
+    // スマホ: 長押し判定
     card.addEventListener("touchstart", () => {
       holdTimer = setTimeout(() => {
         showBubble();
@@ -84,8 +87,8 @@ function renderCharaList(type, list, container) {
     });
     card.addEventListener("touchend", hideBubble);
     card.addEventListener("touchmove", () => {
-      if (isHolding) hideBubble(); // スクロールしたら吹き出し消す
-      clearTimeout(holdTimer); // 移動中は長押しカウント解除
+      if (isHolding) hideBubble();
+      clearTimeout(holdTimer);
     });
 
     container.appendChild(card);
