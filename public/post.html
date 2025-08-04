@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>フォトコメント投稿</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="user.css">
 
+  <!-- html2canvas を先に読み込む -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- post.js -->
+  <script src="post.js" defer></script>
+
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <main class="container">
+
+    <!-- Aキャラプロフィール -->
+    <div id="profileA" class="profile hidden">
+      <img class="profile-icon" src="" alt="キャラアイコン">
+      <div class="profile-text">
+        <h3 class="profile-name"></h3>
+        <p class="profile-desc"></p>
+      </div>
+    </div>
+
+    <!-- キャプチャ対象エリア -->
+    <div id="captureArea">
+
+      <!-- 写真アップロード（額縁付き） -->
+      <label class="upload-area">
+        <input type="file" id="imageInput" accept="image/*" hidden>
+        <div id="previewArea" class="preview">写真をアップロード</div>
+      </label>
+
+      <!-- 生成コメント（A/B両方） -->
+      <div id="resultBubbleA" class="bubble bubble-a hidden">
+        <p class="comment"></p>
+      </div>
+      <div id="resultBubbleB" class="bubble bubble-b hidden">
+        <p class="comment"></p>
+      </div>
+    </div>
+
+    <!-- 感情ボタン（横スライド1列） -->
+    <div class="emotions-scroll">
+      <div class="emotions">
+        <button class="emotion-btn" data-emotion="楽しい">😊</button>
+        <button class="emotion-btn" data-emotion="悲しい">😢</button>
+        <button class="emotion-btn" data-emotion="嬉しい">😁</button>
+        <button class="emotion-btn" data-emotion="安らぎ">😌</button>
+        <button class="emotion-btn" data-emotion="尊い">😇</button>
+        <button class="emotion-btn" data-emotion="怒っている">😡</button>
+        <button class="emotion-btn" data-emotion="恥ずかしい">😳</button>
+        <button class="emotion-btn" data-emotion="驚いた">😱</button>
+      </div>
+    </div>
+
+    <!-- 入力フォーム -->
+    <input type="text" id="username" placeholder="名前（任意）">
+    <textarea id="userComment" rows="2" placeholder="コメントを書く（任意）"></textarea>
+
+    <!-- 送信・共有ボタン横並び -->
+    <div class="button-row">
+      <button id="sendBtn" class="send-btn">送信</button>
+      <button id="shareBtn" class="share-btn">共有</button>
+    </div>
+
+  </main>
+
+  <!-- A/B切替ボタン（後でBキャラアイコン化予定） -->
+  <div class="ab-toggle">
+    <button id="switchA" class="toggle-btn active">A</button>
+    <button id="switchB" class="toggle-btn">B</button>
+  </div>
+  <div id="fadeOverlay"></div>
+</body>
+</html>
