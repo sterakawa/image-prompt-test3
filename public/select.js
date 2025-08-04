@@ -3,14 +3,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch("/charaData.json");
     const data = await res.json();
 
-    renderCharaList("A", data.A, document.getElementById("rowA"));
-    renderCharaList("B", data.B, document.getElementById("rowB"));
+    renderCharaList("A", data.A, document.getElementById("personaA"));
+    renderCharaList("B", data.B, document.getElementById("personaB"));
+
+    restoreSelection(); // 戻り時の選択復元
   } catch (err) {
     console.error("キャラデータ読み込み失敗:", err);
   }
 
   // 「次へ」ボタン
-  document.getElementById("goNext").addEventListener("click", () => {
+  document.getElementById("nextBtn").addEventListener("click", () => {
     if (!localStorage.getItem("selectedCharaA") || !localStorage.getItem("selectedCharaB")) {
       alert("推し(A)とフレンド(B)を1人ずつ選択してください");
       return;
@@ -36,9 +38,27 @@ function renderCharaList(type, list, container) {
 
       // 新たに選択
       card.classList.add("selected");
-      localStorage.setItem(`selectedChara${type}`, chara.id);
+
+      // キャラ情報をlocalStorageに保存
+      localStorage.setItem(`selectedChara${type}`, JSON.stringify(chara));
     });
 
     container.appendChild(card);
+  });
+}
+
+// 選択状態を復元
+function restoreSelection() {
+  ["A", "B"].forEach(type => {
+    const data = localStorage.getItem(`selectedChara${type}`);
+    if (!data) return;
+
+    const chara = JSON.parse(data);
+    const container = document.getElementById(type === "A" ? "personaA" : "personaB");
+    const card = Array.from(container.querySelectorAll(".chara-card")).find(c =>
+      c.querySelector("h3").textContent === chara.name
+    );
+
+    if (card) card.classList.add("selected");
   });
 }
