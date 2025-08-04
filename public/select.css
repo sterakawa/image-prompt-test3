@@ -30,7 +30,7 @@ h2 {
   display: none; /* Chrome/Safariスクロールバー非表示 */
 }
 
-/* キャラカード */
+/* キャラカード（丸アイコン対応） */
 .character {
   flex: 0 0 calc(40% - 8px); /* スマホ時: 2.5個表示相当 */
   background: #fff;
@@ -44,7 +44,7 @@ h2 {
 
 /* 丸型アイコン */
 .character img {
-  width: 80px;      
+  width: 80px;
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
@@ -70,7 +70,7 @@ h2 {
   }
 
   .character img {
-    width: 100px; 
+    width: 100px;
     height: 100px;
   }
 }
