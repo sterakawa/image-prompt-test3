@@ -1,104 +1,41 @@
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  margin: 0;
-  padding: 16px;
-  background: #fafafa;
-  color: #333;
-}
-
-h1 {
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: 1.2rem;
-  margin: 20px 0 10px;
-  text-align: center;
-}
-
-/* キャラクター一覧 */
 .character-grid {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0;
+  scrollbar-width: none; /* Firefox用スクロールバー非表示 */
+}
+.character-grid::-webkit-scrollbar {
+  display: none; /* Chrome/Safariスクロールバー非表示 */
 }
 
-/* キャラクターカード */
+/* キャラカード */
 .character {
-  width: 100px;
-  text-align: center;
-  cursor: pointer;
+  flex: 0 0 calc(40% - 8px); /* スマホ時: 2.5個表示相当 */
+  background: #fff;
   border: 2px solid #ccc;
   border-radius: 8px;
   padding: 8px;
-  background: #fff;
-  transition: border 0.2s, background 0.2s, box-shadow 0.2s;
+  text-align: center;
+  transition: border 0.2s, background 0.2s;
 }
-
 .character img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  width: 100%;
+  border-radius: 8px;
 }
-
 .character p {
   margin: 6px 0 0;
   font-size: 14px;
-  line-height: 1.2;
-  color: #333;
 }
-
-/* 選択状態 */
 .character.selected {
   border: 2px solid #2196f3;
   background: #e3f2fd;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* 次へボタン */
-.next-btn {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin-top: 24px;
-  background: #2196f3;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.next-btn:hover:not(:disabled) {
-  background: #1976d2;
-}
-
-.next-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* スマホ対応 */
-@media (max-width: 480px) {
-  .character-grid {
-    gap: 8px;
-  }
-
+/* PC時: 3個表示 */
+@media (min-width: 768px) {
   .character {
-    width: 90px;
-    padding: 6px;
-  }
-
-  .character img {
-    width: 50px;
-    height: 50px;
-  }
-
-  .character p {
-    font-size: 12px;
+    flex: 0 0 calc(30% - 8px); /* 3個＋隙間で2.5個程度 */
   }
 }
