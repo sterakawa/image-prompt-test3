@@ -226,7 +226,7 @@ async function shareCapture() {
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    // モバイルChromeなどファイル共有対応
+    // 1. ファイル共有対応ブラウザ（モバイルSafari/モバイルChromeなど）
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
@@ -235,7 +235,7 @@ async function shareCapture() {
       });
       triggerResetAnimation();
 
-    // ファイル共有非対応ブラウザ → URL共有 or ダウンロード
+    // 2. ファイル共有不可 → URL（dataURL）共有
     } else if (navigator.share) {
       await navigator.share({
         title: "フォトコメント",
@@ -244,6 +244,7 @@ async function shareCapture() {
       });
       triggerResetAnimation();
 
+    // 3. 共有API非対応 → ダウンロードにフォールバック
     } else {
       const link = document.createElement("a");
       link.href = dataUrl;
@@ -257,7 +258,6 @@ async function shareCapture() {
     alert("共有に失敗しました");
   }
 }
-
 // ===============================
 // 白フェード＆リセット
 // ===============================
