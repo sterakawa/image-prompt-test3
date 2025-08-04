@@ -196,17 +196,23 @@ function resizeImage(file, maxSize = 512) {
 }
 
 // ===============================
-// 共有機能（成功時フェード＋リセット）
+// 共有機能（test2準拠・フォールバック付き）
 // ===============================
 async function shareCapture() {
   try {
     const target = document.getElementById("captureArea");
-    const canvas = await html2canvas(target, { backgroundColor: "#ffffff", scale: 2 });
+
+    // 写真＋コメントのみキャプチャ
+    const canvas = await html2canvas(target, {
+      backgroundColor: "#ffffff",
+      scale: 2
+    });
 
     const dataUrl = canvas.toDataURL("image/png");
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.png", { type: "image/png" });
 
+    // Web Share API（ファイル共有対応）チェック
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
@@ -214,16 +220,19 @@ async function shareCapture() {
         text: "写真とコメントを送ります"
       });
 
-      triggerResetAnimation();
+      triggerResetAnimation(); // 成功時のみリセット
     } else {
+      // ダウンロードにフォールバック
       const link = document.createElement("a");
       link.href = dataUrl;
       link.download = "share.png";
       link.click();
 
-      triggerResetAnimation();
+      triggerResetAnimation(); // 保存完了時もリセット
     }
+
   } catch (error) {
+    console.error("共有エラー:", error);
     alert("共有に失敗しました");
   }
 }
