@@ -254,3 +254,19 @@ textarea {
 .change-chara-btn:hover {
   background: #ddd;
 }
+.toggle-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;               /* 余白リセット */
+  background: transparent;  /* 背景色を消す */
+  cursor: pointer;
+  overflow: hidden;         /* はみ出し防止 */
+  transition: transform 0.2s;
+}
+
+/* 選択中は枠線で示す */
+.toggle-btn.active {
+  border: 2px solid #2196f3;
+}
