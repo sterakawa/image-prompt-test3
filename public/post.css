@@ -270,3 +270,11 @@ textarea {
 .toggle-btn.active {
   border: 2px solid #2196f3;
 }
+/* AB切替アイコン画像のサイズ調整 */
+.toggle-btn img {
+  width: 100%;            /* 親ボタンにフィット */
+  height: 100%;
+  border-radius: 50%;      /* 丸く切り抜く */
+  object-fit: cover;       /* 画像の中心を切り抜き */
+  display: block;
+}
