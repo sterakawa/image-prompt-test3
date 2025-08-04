@@ -208,9 +208,10 @@ async function shareCapture() {
       scale: 2
     });
 
-    const dataUrl = canvas.toDataURL("image/png");
+    // JPG出力（品質80%）
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
     const blob = await (await fetch(dataUrl)).blob();
-    const file = new File([blob], "share.png", { type: "image/png" });
+    const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
     // Web Share API（ファイル共有対応）チェック
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -225,7 +226,7 @@ async function shareCapture() {
       // ダウンロードにフォールバック
       const link = document.createElement("a");
       link.href = dataUrl;
-      link.download = "share.png";
+      link.download = "share.jpg";
       link.click();
 
       triggerResetAnimation(); // 保存完了時もリセット
@@ -236,7 +237,6 @@ async function shareCapture() {
     alert("共有に失敗しました");
   }
 }
-
 // ===============================
 // 白フェード＆リセット
 // ===============================
