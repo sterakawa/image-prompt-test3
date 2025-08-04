@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderCharaList("B", data.B, document.getElementById("personaB"));
 
     restoreSelection(); // 戻り時の選択復元
+    updateNextButton(); // 初期状態チェック
   } catch (err) {
     console.error("キャラデータ読み込み失敗:", err);
   }
@@ -25,9 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderCharaList(type, list, container) {
   list.forEach(chara => {
     const card = document.createElement("div");
-    card.className = "chara-card";
-
-    // 丸アイコン＋名前のみ
+    card.className = "character"; // クラスを統一
     card.innerHTML = `
       <img src="${chara.img}" alt="${chara.name}">
       <p>${chara.name}</p>
@@ -35,13 +34,15 @@ function renderCharaList(type, list, container) {
 
     card.addEventListener("click", () => {
       // 既存の選択解除
-      container.querySelectorAll(".chara-card").forEach(c => c.classList.remove("selected"));
+      container.querySelectorAll(".character").forEach(c => c.classList.remove("selected"));
 
       // 新たに選択
       card.classList.add("selected");
 
-      // キャラ情報をlocalStorageに保存（descも含める）
+      // キャラ情報をlocalStorageに保存
       localStorage.setItem(`selectedChara${type}`, JSON.stringify(chara));
+
+      updateNextButton();
     });
 
     container.appendChild(card);
@@ -56,10 +57,18 @@ function restoreSelection() {
 
     const chara = JSON.parse(data);
     const container = document.getElementById(type === "A" ? "personaA" : "personaB");
-    const card = Array.from(container.querySelectorAll(".chara-card")).find(c =>
+    const card = Array.from(container.querySelectorAll(".character")).find(c =>
       c.querySelector("p").textContent === chara.name
     );
 
     if (card) card.classList.add("selected");
   });
+}
+
+// 「次へ」ボタンの有効/無効制御
+function updateNextButton() {
+  const btn = document.getElementById("nextBtn");
+  const aSelected = localStorage.getItem("selectedCharaA");
+  const bSelected = localStorage.getItem("selectedCharaB");
+  btn.disabled = !(aSelected && bSelected);
 }
