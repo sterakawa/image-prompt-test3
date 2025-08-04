@@ -13,9 +13,8 @@ let rulePrompt = "";
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("post.js 読み込み");
 
-  // プロフィール＆切替アイコン読み込み
-  loadProfileA();
-  loadToggleIcons();
+  // プロフィール読み込み
+  loadProfiles();
 
   // キャラ変更ボタン
   const changeBtn = document.getElementById("changeCharaBtn");
@@ -63,29 +62,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ===============================
-// Aキャラプロフィール
+// プロフィール＆アイコン読み込み
 // ===============================
-function loadProfileA() {
-  const data = localStorage.getItem("selectedCharaA");
-  if (!data) return;
-  const chara = JSON.parse(data);
+function loadProfiles() {
+  const dataA = localStorage.getItem("selectedCharaA");
+  const dataB = localStorage.getItem("selectedCharaB");
 
-  const profile = document.getElementById("profileA");
-  profile.querySelector(".profile-icon").src = chara.img;
-  profile.querySelector(".profile-name").textContent = chara.name;
-  profile.querySelector(".profile-desc").textContent = chara.desc;
-  profile.classList.remove("hidden");
-}
+  if (dataA) {
+    const charaA = JSON.parse(dataA);
+    // プロフィール表示
+    const profile = document.getElementById("profileA");
+    profile.querySelector(".profile-icon").src = charaA.img;
+    profile.querySelector(".profile-name").textContent = charaA.name;
+    profile.querySelector(".profile-desc").textContent = charaA.desc;
+    profile.classList.remove("hidden");
 
-// ===============================
-// AB切替アイコン読み込み
-// ===============================
-function loadToggleIcons() {
-  const charaA = JSON.parse(localStorage.getItem("selectedCharaA") || "{}");
-  const charaB = JSON.parse(localStorage.getItem("selectedCharaB") || "{}");
+    // アイコンA
+    document.getElementById("iconA").src = charaA.img;
+  }
 
-  if (charaA.img) document.getElementById("iconA").src = charaA.img;
-  if (charaB.img) document.getElementById("iconB").src = charaB.img;
+  if (dataB) {
+    const charaB = JSON.parse(dataB);
+    // アイコンB
+    document.getElementById("iconB").src = charaB.img;
+  }
 }
 
 // ===============================
@@ -208,7 +208,7 @@ function resizeImage(file, maxSize = 512) {
 }
 
 // ===============================
-// 共有機能
+// 共有機能（JPG出力）
 // ===============================
 async function shareCapture() {
   try {
@@ -225,14 +225,12 @@ async function shareCapture() {
         title: "フォトコメント",
         text: "写真とコメントを送ります"
       });
-
       triggerResetAnimation();
     } else {
       const link = document.createElement("a");
       link.href = dataUrl;
       link.download = "share.jpg";
       link.click();
-
       triggerResetAnimation();
     }
   } catch (error) {
