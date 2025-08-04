@@ -1,6 +1,19 @@
-/* キャラカード */
+/* 横スクロール行 */
+.character-grid {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0;
+  scrollbar-width: none;
+}
+.character-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* キャラカード（縦長でコンパクト） */
 .character {
-  flex: 0 0 calc(40% - 8px); /* スマホ: 2.5個表示 */
+  flex: 0 0 calc(40% - 8px); /* スマホ: 2.5個見える */
   background: #fff;
   border: 2px solid #ccc;
   border-radius: 12px;
@@ -17,7 +30,7 @@
 .character img {
   width: 100px;
   height: 100px;
-  border-radius: 16px;  /* 角丸に変更 */
+  border-radius: 16px;
   object-fit: cover;
   margin-bottom: 8px;
 }
