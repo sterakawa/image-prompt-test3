@@ -1,10 +1,36 @@
+/* Google Fontsで読み込み
+<head>に追加：
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+*/
+
+body {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  margin: 0;
+  padding: 16px;
+  background: #fafafa;
+  color: #333;
+}
+
+h1 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin: 20px 0 10px;
+  font-weight: 500;
+}
+
 /* 横スクロール行 */
 .character-grid {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 8px 0;
+  padding: 8px 0 24px;
   scrollbar-width: none;
 }
 .character-grid::-webkit-scrollbar {
@@ -13,9 +39,9 @@
 
 /* キャラカード（縦長＆枠なし） */
 .character {
-  flex: 0 0 calc(40% - 8px); /* スマホ: 2.5個表示相当 */
-  background: transparent;   /* 背景と枠を透明に */
-  border: none;              /* 枠削除 */
+  flex: 0 0 calc(40% - 8px);
+  background: transparent;
+  border: none;
   border-radius: 12px;
   padding: 8px 0;
   text-align: center;
@@ -25,11 +51,11 @@
   align-items: center;
 }
 
-/* 角丸正方形アイコン（大きめ） */
+/* 大きめアイコン */
 .character img {
-  width: 120px;     /* 写真サイズ拡大 */
-  height: 120px;
-  border-radius: 16px;
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
   object-fit: cover;
   margin-bottom: 8px;
 }
@@ -37,24 +63,49 @@
 /* 名前 */
 .character p {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
-/* 選択状態（背景に色だけ付与） */
+/* 選択状態 */
 .character.selected {
   background: #e3f2fd;
-  border-radius: 16px;
-  padding: 8px;
+  border-radius: 20px;
+  padding: 12px;
 }
 
-/* PC時: 3個表示 */
+/* PC時: 3個表示＋さらに大きめ */
 @media (min-width: 768px) {
   .character {
     flex: 0 0 calc(30% - 8px);
   }
 
   .character img {
-    width: 140px;
-    height: 140px;
+    width: 200px;
+    height: 200px;
   }
+}
+
+/* 次へボタン固定 */
+.next-btn {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  padding: 14px;
+  background: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.next-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
