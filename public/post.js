@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   console.log("post.js 読み込み");
 
   // プロフィール読み込み
-  loadProfiles();
+  loadProfileA();
+  loadIcons();
 
   // キャラ変更ボタン
   const changeBtn = document.getElementById("changeCharaBtn");
@@ -62,30 +63,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ===============================
-// プロフィール＆アイコン読み込み
+// Aキャラプロフィール表示
 // ===============================
-function loadProfiles() {
-  const dataA = localStorage.getItem("selectedCharaA");
-  const dataB = localStorage.getItem("selectedCharaB");
+function loadProfileA() {
+  const data = localStorage.getItem("selectedCharaA");
+  if (!data) return;
+  const chara = JSON.parse(data);
 
-  if (dataA) {
-    const charaA = JSON.parse(dataA);
-    // プロフィール表示
-    const profile = document.getElementById("profileA");
-    profile.querySelector(".profile-icon").src = charaA.img;
-    profile.querySelector(".profile-name").textContent = charaA.name;
-    profile.querySelector(".profile-desc").textContent = charaA.desc;
-    profile.classList.remove("hidden");
+  const profile = document.getElementById("profileA");
+  profile.querySelector(".profile-icon").src = chara.img;
+  profile.querySelector(".profile-name").textContent = chara.name;
+  profile.querySelector(".profile-desc").textContent = chara.desc;
+  profile.classList.remove("hidden");
+}
 
-    // アイコンA
-    document.getElementById("iconA").src = charaA.img;
-  }
+// ===============================
+// A/Bアイコン読み込み
+// ===============================
+function loadIcons() {
+  const charaA = JSON.parse(localStorage.getItem("selectedCharaA") || "{}");
+  const charaB = JSON.parse(localStorage.getItem("selectedCharaB") || "{}");
 
-  if (dataB) {
-    const charaB = JSON.parse(dataB);
-    // アイコンB
-    document.getElementById("iconB").src = charaB.img;
-  }
+  if (charaA.img) document.getElementById("iconA").src = charaA.img;
+  if (charaB.img) document.getElementById("iconB").src = charaB.img;
 }
 
 // ===============================
@@ -184,7 +184,7 @@ function previewImage(event) {
 }
 
 // ===============================
-// 画像リサイズ & Base64化
+// 画像リサイズ & Base64化 (JPG圧縮)
 // ===============================
 function resizeImage(file, maxSize = 512) {
   return new Promise((resolve) => {
@@ -213,7 +213,11 @@ function resizeImage(file, maxSize = 512) {
 async function shareCapture() {
   try {
     const target = document.getElementById("captureArea");
-    const canvas = await html2canvas(target, { backgroundColor: "#ffffff", scale: 2 });
+
+    const canvas = await html2canvas(target, {
+      backgroundColor: "#ffffff",
+      scale: 2
+    });
 
     const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
     const blob = await (await fetch(dataUrl)).blob();
@@ -225,15 +229,18 @@ async function shareCapture() {
         title: "フォトコメント",
         text: "写真とコメントを送ります"
       });
+
       triggerResetAnimation();
     } else {
       const link = document.createElement("a");
       link.href = dataUrl;
       link.download = "share.jpg";
       link.click();
+
       triggerResetAnimation();
     }
   } catch (error) {
+    console.error("共有エラー:", error);
     alert("共有に失敗しました");
   }
 }
