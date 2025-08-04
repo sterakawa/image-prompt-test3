@@ -13,7 +13,7 @@ let rulePrompt = "";
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("post.js 読み込み");
 
-  // プロフィール読み込み
+  // プロフィール＆アイコン読み込み
   loadProfileA();
   loadIcons();
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ===============================
-// Aキャラプロフィール表示
+// プロフィール表示
 // ===============================
 function loadProfileA() {
   const data = localStorage.getItem("selectedCharaA");
@@ -141,13 +141,11 @@ async function sendData() {
   const bubbleA = document.getElementById("resultBubbleA");
   const bubbleB = document.getElementById("resultBubbleB");
 
-  // バブルを表示＆ローディングエフェクト適用
   bubbleA.classList.remove("hidden");
   bubbleB.classList.remove("hidden");
   bubbleA.classList.add("loading");
   bubbleB.classList.add("loading");
 
-  // コメント部分を空にする
   bubbleA.querySelector(".comment").textContent = "";
   bubbleB.querySelector(".comment").textContent = "";
 
@@ -166,7 +164,6 @@ async function sendData() {
     bubbleA.querySelector(".comment").textContent = "エラーが発生しました";
     bubbleB.querySelector(".comment").textContent = "エラーが発生しました";
   } finally {
-    // ローディング解除
     bubbleA.classList.remove("loading");
     bubbleB.classList.remove("loading");
     sendBtn.disabled = false;
@@ -174,6 +171,7 @@ async function sendData() {
     switchMode(currentMode);
   }
 }
+
 // ===============================
 // 画像プレビュー
 // ===============================
@@ -228,59 +226,4 @@ async function shareCapture() {
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        files: [file],
-        title: "フォトコメント",
-        text: "写真とコメントを送ります"
-      });
-
-      triggerResetAnimation();
-    } else {
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = "share.jpg";
-      link.click();
-
-      triggerResetAnimation();
-    }
-  } catch (error) {
-    console.error("共有エラー:", error);
-    alert("共有に失敗しました");
-  }
-}
-
-// ===============================
-// 白フェード＆リセット
-// ===============================
-function triggerResetAnimation() {
-  const overlay = document.getElementById("fadeOverlay");
-  overlay.classList.add("active");
-  document.querySelectorAll("button").forEach(btn => btn.disabled = true);
-
-  setTimeout(() => {
-    resetUI();
-    overlay.classList.remove("active");
-    document.querySelectorAll("button").forEach(btn => btn.disabled = false);
-  }, 500);
-}
-
-// ===============================
-// UI初期化
-// ===============================
-function resetUI() {
-  document.getElementById("imageInput").value = "";
-  document.getElementById("previewArea").innerHTML = "写真をアップロード";
-  document.getElementById("username").value = "";
-  document.getElementById("userComment").value = "";
-  document.querySelectorAll(".emotion-btn").forEach(b => b.classList.remove("selected"));
-  selectedEmotion = "";
-  currentMode = "A";
-
-  document.querySelector("#resultBubbleA .comment").textContent = "";
-  document.querySelector("#resultBubbleB .comment").textContent = "";
-
-  document.getElementById("resultBubbleA").classList.add("hidden");
-  document.getElementById("resultBubbleB").classList.add("hidden");
-  switchMode("A");
-}
+    if (navigator.share && navigator.canShare && navigator.canShare({ files:
