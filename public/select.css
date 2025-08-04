@@ -15,8 +15,10 @@ h1 {
 h2 {
   font-size: 1.2rem;
   margin: 20px 0 10px;
+  text-align: center;
 }
 
+/* キャラクター一覧 */
 .character-grid {
   display: flex;
   gap: 12px;
@@ -24,15 +26,16 @@ h2 {
   justify-content: center;
 }
 
+/* キャラクターカード */
 .character {
-  width: 90px;
+  width: 100px;
   text-align: center;
   cursor: pointer;
   border: 2px solid #ccc;
   border-radius: 8px;
   padding: 8px;
   background: #fff;
-  transition: border 0.2s, background 0.2s;
+  transition: border 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
 .character img {
@@ -44,13 +47,18 @@ h2 {
 .character p {
   margin: 6px 0 0;
   font-size: 14px;
+  line-height: 1.2;
+  color: #333;
 }
 
+/* 選択状態 */
 .character.selected {
   border: 2px solid #2196f3;
   background: #e3f2fd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* 次へボタン */
 .next-btn {
   display: block;
   width: 100%;
@@ -62,9 +70,35 @@ h2 {
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.next-btn:hover:not(:disabled) {
+  background: #1976d2;
 }
 
 .next-btn:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+/* スマホ対応 */
+@media (max-width: 480px) {
+  .character-grid {
+    gap: 8px;
+  }
+
+  .character {
+    width: 90px;
+    padding: 6px;
+  }
+
+  .character img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .character p {
+    font-size: 12px;
+  }
 }
