@@ -40,11 +40,14 @@ function renderCharaList(type, list, container) {
       updateNextButton();
     });
 
+    // ==============================
     // 長押しでプロフィール吹き出し
-    let bubble;
+    // ==============================
+    let holdTimer;
+
     const showBubble = () => {
       removeBubble();
-      bubble = document.createElement("div");
+      const bubble = document.createElement("div");
       bubble.className = "profile-bubble active";
       bubble.innerHTML = `<strong>${chara.name}</strong><br>${chara.desc}`;
       document.body.appendChild(bubble);
@@ -59,18 +62,25 @@ function renderCharaList(type, list, container) {
     };
 
     const hideBubble = () => {
+      clearTimeout(holdTimer);
       removeBubble();
     };
 
+    const startHold = () => {
+      holdTimer = setTimeout(() => {
+        showBubble();
+      }, 500); // 0.5秒以上押されたら表示
+    };
+
     // PC対応
-    card.addEventListener("mousedown", showBubble);
+    card.addEventListener("mousedown", startHold);
     card.addEventListener("mouseup", hideBubble);
     card.addEventListener("mouseleave", hideBubble);
 
     // スマホ対応
     card.addEventListener("touchstart", (e) => {
       e.preventDefault();
-      showBubble();
+      startHold();
     });
     card.addEventListener("touchend", hideBubble);
 
