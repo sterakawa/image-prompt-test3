@@ -13,15 +13,16 @@ let rulePrompt = "";
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("post.js 読み込み");
 
-  // プロフィール読み込み
+  // プロフィール＆切替アイコン読み込み
   loadProfileA();
+  loadToggleIcons();
 
-  // キャラ変更ボタンイベント
+  // キャラ変更ボタン
   const changeBtn = document.getElementById("changeCharaBtn");
   if (changeBtn) {
     changeBtn.addEventListener("click", () => {
-      localStorage.clear();               // キャラ選択情報をクリア
-      window.location.href = "select.html"; // キャラ選択画面へ遷移
+      localStorage.clear();
+      window.location.href = "select.html";
     });
   }
 
@@ -74,6 +75,17 @@ function loadProfileA() {
   profile.querySelector(".profile-name").textContent = chara.name;
   profile.querySelector(".profile-desc").textContent = chara.desc;
   profile.classList.remove("hidden");
+}
+
+// ===============================
+// AB切替アイコン読み込み
+// ===============================
+function loadToggleIcons() {
+  const charaA = JSON.parse(localStorage.getItem("selectedCharaA") || "{}");
+  const charaB = JSON.parse(localStorage.getItem("selectedCharaB") || "{}");
+
+  if (charaA.img) document.getElementById("iconA").src = charaA.img;
+  if (charaB.img) document.getElementById("iconB").src = charaB.img;
 }
 
 // ===============================
@@ -196,24 +208,17 @@ function resizeImage(file, maxSize = 512) {
 }
 
 // ===============================
-// 共有機能（test2準拠・フォールバック付き）
+// 共有機能
 // ===============================
 async function shareCapture() {
   try {
     const target = document.getElementById("captureArea");
+    const canvas = await html2canvas(target, { backgroundColor: "#ffffff", scale: 2 });
 
-    // 写真＋コメントのみキャプチャ
-    const canvas = await html2canvas(target, {
-      backgroundColor: "#ffffff",
-      scale: 2
-    });
-
-    // JPG出力（品質80%）
     const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    // Web Share API（ファイル共有対応）チェック
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
@@ -221,22 +226,20 @@ async function shareCapture() {
         text: "写真とコメントを送ります"
       });
 
-      triggerResetAnimation(); // 成功時のみリセット
+      triggerResetAnimation();
     } else {
-      // ダウンロードにフォールバック
       const link = document.createElement("a");
       link.href = dataUrl;
       link.download = "share.jpg";
       link.click();
 
-      triggerResetAnimation(); // 保存完了時もリセット
+      triggerResetAnimation();
     }
-
   } catch (error) {
-    console.error("共有エラー:", error);
     alert("共有に失敗しました");
   }
 }
+
 // ===============================
 // 白フェード＆リセット
 // ===============================
