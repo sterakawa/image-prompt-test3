@@ -102,3 +102,37 @@ h2 {
   background: #ccc;
   cursor: not-allowed;
 }
+/* 吹き出し共通 */
+.profile-bubble {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  max-width: 200px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* 吹き出し表示中 */
+.profile-bubble.active {
+  opacity: 1;
+}
+
+/* 吹き出しの矢印 */
+.profile-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 8px 0 8px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+}
