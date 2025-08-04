@@ -26,10 +26,11 @@ function renderCharaList(type, list, container) {
   list.forEach(chara => {
     const card = document.createElement("div");
     card.className = "chara-card";
+
+    // 丸アイコン＋名前のみ
     card.innerHTML = `
       <img src="${chara.img}" alt="${chara.name}">
-      <h3>${chara.name}</h3>
-      <p>${chara.desc}</p>
+      <p>${chara.name}</p>
     `;
 
     card.addEventListener("click", () => {
@@ -39,7 +40,7 @@ function renderCharaList(type, list, container) {
       // 新たに選択
       card.classList.add("selected");
 
-      // キャラ情報をlocalStorageに保存
+      // キャラ情報をlocalStorageに保存（descも含める）
       localStorage.setItem(`selectedChara${type}`, JSON.stringify(chara));
     });
 
@@ -56,7 +57,7 @@ function restoreSelection() {
     const chara = JSON.parse(data);
     const container = document.getElementById(type === "A" ? "personaA" : "personaB");
     const card = Array.from(container.querySelectorAll(".chara-card")).find(c =>
-      c.querySelector("h3").textContent === chara.name
+      c.querySelector("p").textContent === chara.name
     );
 
     if (card) card.classList.add("selected");
