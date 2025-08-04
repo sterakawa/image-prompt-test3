@@ -13,7 +13,7 @@ let rulePrompt = "";
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("post.js 読み込み");
 
-  // プロフィール＆アイコン読み込み
+  // プロフィール読み込み
   loadProfileA();
   loadIcons();
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ===============================
-// プロフィール表示
+// Aキャラプロフィール表示
 // ===============================
 function loadProfileA() {
   const data = localStorage.getItem("selectedCharaA");
@@ -211,7 +211,7 @@ function resizeImage(file, maxSize = 512) {
 }
 
 // ===============================
-// 共有機能（JPG出力）
+// 共有機能（Chrome対応フォールバック付き）
 // ===============================
 async function shareCapture() {
   try {
@@ -226,4 +226,71 @@ async function shareCapture() {
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    if (navigator.share && navigator.canShare && navigator.canShare({ files:
+    // モバイルChromeなどファイル共有対応
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: "フォトコメント",
+        text: "写真とコメントを送ります"
+      });
+      triggerResetAnimation();
+
+    // ファイル共有非対応ブラウザ → URL共有 or ダウンロード
+    } else if (navigator.share) {
+      await navigator.share({
+        title: "フォトコメント",
+        text: "写真とコメントを送ります",
+        url: dataUrl
+      });
+      triggerResetAnimation();
+
+    } else {
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = "share.jpg";
+      link.click();
+      triggerResetAnimation();
+    }
+
+  } catch (error) {
+    console.error("共有エラー:", error);
+    alert("共有に失敗しました");
+  }
+}
+
+// ===============================
+// 白フェード＆リセット
+// ===============================
+function triggerResetAnimation() {
+  const overlay = document.getElementById("fadeOverlay");
+  overlay.classList.add("active");
+  document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+
+  setTimeout(() => {
+    resetUI();
+    overlay.classList.remove("active");
+    document.querySelectorAll("button").forEach(btn => btn.disabled = false);
+  }, 500);
+}
+
+// ===============================
+// UI初期化（スクロールリセット追加）
+// ===============================
+function resetUI() {
+  document.getElementById("imageInput").value = "";
+  document.getElementById("previewArea").innerHTML = "写真をアップロード";
+  document.getElementById("username").value = "";
+  document.getElementById("userComment").value = "";
+  document.querySelectorAll(".emotion-btn").forEach(b => b.classList.remove("selected"));
+  selectedEmotion = "";
+  currentMode = "A";
+
+  document.querySelector("#resultBubbleA .comment").textContent = "";
+  document.querySelector("#resultBubbleB .comment").textContent = "";
+
+  document.getElementById("resultBubbleA").classList.add("hidden");
+  document.getElementById("resultBubbleB").classList.add("hidden");
+
+  switchMode("A");
+  window.scrollTo(0, 0); // ← 共有後スクロールリセット
+}
