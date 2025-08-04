@@ -246,4 +246,10 @@ function resetUI() {
   selectedEmotion = "";
   currentMode = "A";
 
-  document.querySelector
+  document.querySelector("#resultBubbleA .comment").textContent = "";
+  document.querySelector("#resultBubbleB .comment").textContent = "";
+
+  document.getElementById("resultBubbleA").classList.add("hidden");
+  document.getElementById("resultBubbleB").classList.add("hidden");
+  switchMode("A");
+}
