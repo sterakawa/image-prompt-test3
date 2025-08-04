@@ -16,6 +16,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   // プロフィール読み込み
   loadProfileA();
 
+  // キャラ変更ボタンイベント
+  const changeBtn = document.getElementById("changeCharaBtn");
+  if (changeBtn) {
+    changeBtn.addEventListener("click", () => {
+      localStorage.clear();               // キャラ選択情報をクリア
+      window.location.href = "select.html"; // キャラ選択画面へ遷移
+    });
+  }
+
   // プロンプト読み込み
   try {
     const [aText, bText, ruleText] = await Promise.all([
