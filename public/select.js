@@ -40,14 +40,14 @@ function renderCharaList(type, list, container) {
       updateNextButton();
     });
 
-    // ==============================
-    // 長押しでプロフィール吹き出し
-    // ==============================
+    // --- 長押しでプロフィール吹き出し ---
     let holdTimer;
+    let bubble;
+    let isHolding = false;
 
     const showBubble = () => {
       removeBubble();
-      const bubble = document.createElement("div");
+      bubble = document.createElement("div");
       bubble.className = "profile-bubble active";
       bubble.innerHTML = `<strong>${chara.name}</strong><br>${chara.desc}`;
       document.body.appendChild(bubble);
@@ -64,25 +64,29 @@ function renderCharaList(type, list, container) {
     const hideBubble = () => {
       clearTimeout(holdTimer);
       removeBubble();
+      isHolding = false;
     };
 
-    const startHold = () => {
-      holdTimer = setTimeout(() => {
-        showBubble();
-      }, 500); // 0.5秒以上押されたら表示
-    };
-
-    // PC対応
-    card.addEventListener("mousedown", startHold);
+    // PC: 長押しは不要、クリックで即表示→離すと消す
+    card.addEventListener("mousedown", () => {
+      showBubble();
+      isHolding = true;
+    });
     card.addEventListener("mouseup", hideBubble);
     card.addEventListener("mouseleave", hideBubble);
 
-    // スマホ対応
-    card.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      startHold();
+    // スマホ: 長押し判定（500ms）
+    card.addEventListener("touchstart", () => {
+      holdTimer = setTimeout(() => {
+        showBubble();
+        isHolding = true;
+      }, 500);
     });
     card.addEventListener("touchend", hideBubble);
+    card.addEventListener("touchmove", () => {
+      if (isHolding) hideBubble(); // スクロールしたら吹き出し消す
+      clearTimeout(holdTimer); // 移動中は長押しカウント解除
+    });
 
     container.appendChild(card);
   });
