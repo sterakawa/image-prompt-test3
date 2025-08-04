@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderCharaList(type, list, container) {
   list.forEach(chara => {
     const card = document.createElement("div");
-    card.className = "character"; // クラスを統一
+    card.className = "character";
     card.innerHTML = `
       <img src="${chara.img}" alt="${chara.name}">
       <p>${chara.name}</p>
@@ -47,6 +47,14 @@ function renderCharaList(type, list, container) {
 
     container.appendChild(card);
   });
+
+  // スマホ時のみ2.5個目を少し見せる位置にスクロール
+  if (window.innerWidth < 768) {
+    setTimeout(() => {
+      const cardWidth = container.querySelector(".character")?.offsetWidth || 0;
+      container.scrollLeft = cardWidth * 0.5;
+    }, 0);
+  }
 }
 
 // 選択状態を復元
