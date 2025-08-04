@@ -11,9 +11,7 @@ body {
   padding: 16px;
 }
 
-/* =====================
-   Aキャラプロフィール
-===================== */
+/* Aキャラプロフィール */
 #profileA {
   display: flex;
   flex-direction: column;
@@ -21,7 +19,6 @@ body {
   text-align: center;
   margin-bottom: 16px;
 }
-
 #profileA .profile-icon {
   width: 120px;
   height: 120px;
@@ -29,13 +26,11 @@ body {
   object-fit: cover;
   margin-bottom: 8px;
 }
-
 #profileA .profile-name {
   font-size: 18px;
   font-weight: 700;
   margin: 0 0 4px;
 }
-
 #profileA .profile-desc {
   font-size: 14px;
   color: #555;
@@ -44,9 +39,7 @@ body {
   line-height: 1.4;
 }
 
-/* =====================
-   キャプチャ範囲（写真＋コメント）
-===================== */
+/* キャプチャ範囲 */
 #captureArea {
   background-color: #ffffff;
   padding: 16px;
@@ -65,7 +58,6 @@ body {
   margin-bottom: 16px;
   cursor: pointer;
 }
-
 .preview img {
   max-width: 100%;
   border: 8px solid #fff;
@@ -84,22 +76,11 @@ body {
   position: relative;
   font-size: 16px;
   line-height: 1.6;
-  word-wrap: break-word;
   margin-top: 12px;
 }
-
-.bubble-a {
-  background: #e3f2fd;
-}
-
-.bubble-b {
-  background: #e6f4ea;
-}
-
-/* 初期非表示 */
-.hidden {
-  display: none;
-}
+.bubble-a { background: #e3f2fd; }
+.bubble-b { background: #e6f4ea; }
+.hidden { display: none; }
 
 /* ローディング演出 */
 .bubble.loading .comment::after {
@@ -108,30 +89,25 @@ body {
   color: #888;
   animation: blink 1s infinite;
 }
-
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
 
-/* 感情ボタン（横スクロール） */
+/* 感情ボタン */
 .emotions-scroll {
   margin-bottom: 12px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
-.emotions-scroll::-webkit-scrollbar {
-  display: none;
-}
-
+.emotions-scroll::-webkit-scrollbar { display: none; }
 .emotions {
   display: flex;
   gap: 8px;
   padding: 4px 0;
   white-space: nowrap;
 }
-
 .emotion-btn {
   font-size: 20px;
   width: 40px;
@@ -141,17 +117,14 @@ body {
   border-radius: 50%;
   cursor: pointer;
   transition: 0.2s;
-  flex: 0 0 auto;
 }
-
 .emotion-btn.selected {
   background: #e0f2f1;
   transform: scale(1.1);
 }
 
 /* 入力フィールド */
-input[type="text"],
-textarea {
+input[type="text"], textarea {
   width: 100%;
   padding: 10px;
   margin-bottom: 12px;
@@ -162,14 +135,12 @@ textarea {
   box-sizing: border-box;
 }
 
-/* 送信・共有ボタン横並び */
+/* 送信・共有ボタン */
 .button-row {
   display: flex;
   gap: 8px;
 }
-
-.send-btn,
-.share-btn {
+.send-btn, .share-btn {
   flex: 1;
   padding: 12px;
   font-size: 16px;
@@ -178,26 +149,12 @@ textarea {
   cursor: pointer;
   transition: background 0.2s;
 }
+.send-btn { background: #2196f3; color: #fff; }
+.send-btn:hover { background: #1976d2; }
+.share-btn { background: #4caf50; color: #fff; }
+.share-btn:hover { background: #388e3c; }
 
-.send-btn {
-  background: #2196f3;
-  color: #fff;
-}
-
-.send-btn:hover {
-  background: #1976d2;
-}
-
-.share-btn {
-  background: #4caf50;
-  color: #fff;
-}
-
-.share-btn:hover {
-  background: #388e3c;
-}
-
-/* A/B切替ボタン（右下固定） */
+/* A/B切替ボタン（アイコン表示） */
 .ab-toggle {
   position: fixed;
   bottom: 20px;
@@ -206,21 +163,26 @@ textarea {
   flex-direction: column;
   gap: 10px;
 }
-
 .toggle-btn {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: none;
-  font-size: 18px;
+  border: 2px solid transparent;
+  padding: 0;
+  background: transparent;
   cursor: pointer;
-  background: #ddd;
-  transition: background 0.2s;
+  overflow: hidden;
+  transition: transform 0.2s, border 0.2s;
 }
-
 .toggle-btn.active {
-  background: #2196f3;
-  color: #fff;
+  border-color: #2196f3;
+}
+.toggle-btn img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
 }
 
 /* 白フェード */
@@ -240,6 +202,8 @@ textarea {
   opacity: 1;
   pointer-events: auto;
 }
+
+/* キャラ変更ボタン */
 .change-chara-btn {
   margin-top: 8px;
   padding: 6px 12px;
@@ -250,63 +214,4 @@ textarea {
   border-radius: 6px;
   cursor: pointer;
 }
-
-.change-chara-btn:hover {
-  background: #ddd;
-}
-.toggle-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  padding: 0;               /* 余白リセット */
-  background: transparent;  /* 背景色を消す */
-  cursor: pointer;
-  overflow: hidden;         /* はみ出し防止 */
-  transition: transform 0.2s;
-}
-
-/* 選択中は枠線で示す */
-.toggle-btn.active {
-  border: 2px solid #2196f3;
-}
-/* AB切替アイコン画像のサイズ調整 */
-.toggle-btn img {
-  width: 100%;            /* 親ボタンにフィット */
-  height: 100%;
-  border-radius: 50%;      /* 丸く切り抜く */
-  object-fit: cover;       /* 画像の中心を切り抜き */
-  display: block;
-}
-.ab-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.toggle-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.2s, border 0.2s;
-}
-
-.toggle-btn.active {
-  border-color: #2196f3;
-}
-
-.toggle-btn img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-}
+.change-chara-btn:hover { background: #ddd; }
