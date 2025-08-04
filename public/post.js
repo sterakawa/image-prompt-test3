@@ -217,6 +217,7 @@ async function shareCapture() {
   try {
     const target = document.getElementById("captureArea");
 
+    // キャプチャ作成
     const canvas = await html2canvas(target, {
       backgroundColor: "#ffffff",
       scale: 2
@@ -226,11 +227,21 @@ async function shareCapture() {
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    // iPhone Chromeはファイル共有NGなので判定
+    // --- iPhone Chrome判定 ---
     const isIPhoneChrome = /CriOS/.test(navigator.userAgent);
 
-    // --- ファイル共有 ---
-    if (!isIPhoneChrome && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+    if (isIPhoneChrome) {
+      // iPhone Chrome → 即ダウンロードにフォールバック
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = "share.jpg";
+      link.click();
+      triggerResetAnimation();
+      return;
+    }
+
+    // --- ファイル共有可能なら共有 ---
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
         title: "フォトコメント",
@@ -240,7 +251,7 @@ async function shareCapture() {
       return;
     }
 
-    // --- URL共有 ---
+    // --- URL共有可能ならURL共有 ---
     if (navigator.share) {
       await navigator.share({
         title: "フォトコメント",
@@ -251,7 +262,7 @@ async function shareCapture() {
       return;
     }
 
-    // --- ダウンロードフォールバック ---
+    // --- それ以外 → ダウンロード ---
     const link = document.createElement("a");
     link.href = dataUrl;
     link.download = "share.jpg";
