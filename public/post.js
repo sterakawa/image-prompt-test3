@@ -211,13 +211,13 @@ function resizeImage(file, maxSize = 512) {
 }
 
 // ===============================
-// 共有機能（Chrome対応フォールバック付き）
+// 共有機能（iPhone Chrome対応＋フォールバック）
 // ===============================
 async function shareCapture() {
   try {
     const target = document.getElementById("captureArea");
 
-    // キャプチャ作成
+    // キャプチャ生成
     const canvas = await html2canvas(target, {
       backgroundColor: "#ffffff",
       scale: 2
@@ -227,20 +227,14 @@ async function shareCapture() {
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    // --- iPhone Chrome判定 ---
+    // iPhone Chromeは file share 非対応 → 直接保存
     const isIPhoneChrome = /CriOS/.test(navigator.userAgent);
-
     if (isIPhoneChrome) {
-      // iPhone Chrome → 即ダウンロードにフォールバック
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = "share.jpg";
-      link.click();
-      triggerResetAnimation();
+      downloadFallback(dataUrl);
       return;
     }
 
-    // --- ファイル共有可能なら共有 ---
+    // Web Share API + ファイル共有可能
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
@@ -251,7 +245,7 @@ async function shareCapture() {
       return;
     }
 
-    // --- URL共有可能ならURL共有 ---
+    // URL共有のみ可能
     if (navigator.share) {
       await navigator.share({
         title: "フォトコメント",
@@ -262,18 +256,26 @@ async function shareCapture() {
       return;
     }
 
-    // --- それ以外 → ダウンロード ---
-    const link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = "share.jpg";
-    link.click();
-    triggerResetAnimation();
+    // それ以外 → ダウンロード
+    downloadFallback(dataUrl);
 
   } catch (error) {
     console.error("共有エラー:", error);
     alert("共有に失敗しました");
   }
 }
+
+// ===============================
+// ダウンロードフォールバック
+// ===============================
+function downloadFallback(dataUrl) {
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = "share.jpg";
+  link.click();
+  triggerResetAnimation();
+}
+
 // ===============================
 // 白フェード＆リセット
 // ===============================
@@ -308,5 +310,5 @@ function resetUI() {
   document.getElementById("resultBubbleB").classList.add("hidden");
 
   switchMode("A");
-  window.scrollTo(0, 0); // ← 共有後スクロールリセット
+  window.scrollTo(0, 0); // 共有後スクロールリセット
 }
