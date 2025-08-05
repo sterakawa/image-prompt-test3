@@ -55,15 +55,15 @@ function renderCharaList(type, list, container) {
       const bubbleWidth = bubble.offsetWidth;
       const bubbleHeight = bubble.offsetHeight;
 
-      if (type === "A") {
-        // A列 → 下に出す
-        bubble.style.left = `${rect.left + rect.width / 2 - bubbleWidth / 2}px`;
-        bubble.style.top = `${rect.bottom + 10}px`;
-      } else {
-        // B列 → 上に出す
-        bubble.style.left = `${rect.left + rect.width / 2 - bubbleWidth / 2}px`;
-        bubble.style.top = `${rect.top - bubbleHeight - 10}px`;
-      }
+     if (type === "A") {
+  // A列 → 下に出す
+  bubble.style.left = `${rect.left + rect.width / 2 - bubbleWidth / 2}px`;
+  bubble.style.top = `${rect.bottom + 4}px`;   // 10px → 4px
+} else {
+  // B列 → 上に出す
+  bubble.style.left = `${rect.left + rect.width / 2 - bubbleWidth / 2}px`;
+  bubble.style.top = `${rect.top - bubbleHeight - 4}px`;  // 10px → 4px
+}
     });
 
     container.appendChild(card);
