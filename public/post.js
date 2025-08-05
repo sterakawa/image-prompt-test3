@@ -226,24 +226,35 @@ async function shareCapture() {
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    // --- まず共有を試す ---
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({
-          files: [file],
-          title: "フォトコメント",
-          text: "写真とコメントを送ります"
-        });
-        triggerResetAnimation();
-        return;
-      } catch (err) {
-        // 共有失敗 → メッセージ後に保存
-        alert("共有に失敗しました。代わりに画像を保存します。\nSafariをご利用いただくと共有が可能です。");
-        fallbackDownload(dataUrl);
-        return;
-      }
-    }
+   // --- まず共有を試す ---
+if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+  try {
+    // Aキャラ名とコメントを取得
+    const charaA = JSON.parse(localStorage.getItem("selectedCharaA") || "{}");
+    const commentA = document.querySelector("#resultBubbleA .comment").textContent || "";
 
+    // コメント文作成（自然な文）
+    const shareText = `
+${charaA.name || "Aキャラ"}がコメントしました！
+
+${commentA}
+`.trim();
+
+    await navigator.share({
+      files: [file],
+      title: "フォトコメント",
+      text: shareText
+    });
+
+    triggerResetAnimation();
+    return;
+  } catch (err) {
+    // 共有失敗 → メッセージ後に保存
+    alert("共有に失敗しました。代わりに画像を保存します。\nSafariをご利用いただくと共有が可能です。");
+    fallbackDownload(dataUrl);
+    return;
+  }
+}
     // --- URL共有のみ可能ならURL共有 ---
     if (navigator.share) {
       try {
