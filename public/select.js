@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderCharaList("A", data.A, document.getElementById("personaA"));
     renderCharaList("B", data.B, document.getElementById("personaB"));
 
-    restoreSelection(); // 戻り時の選択復元
-    updateNextButton(); // 初期状態チェック
+    restoreSelection();
+    updateNextButton();
   } catch (err) {
     console.error("キャラデータ読み込み失敗:", err);
   }
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// キャラ一覧を生成
+// キャラ一覧生成
 function renderCharaList(type, list, container) {
   list.forEach(chara => {
     const card = document.createElement("div");
@@ -32,69 +32,39 @@ function renderCharaList(type, list, container) {
       <p>${chara.name}</p>
     `;
 
-    // 右クリック・長押しメニュー無効化
-    card.addEventListener("contextmenu", (e) => e.preventDefault());
-
-    // 選択処理
+    // --- タップで選択＋吹き出し表示 ---
     card.addEventListener("click", () => {
+      // 既存吹き出し削除
+      removeBubble();
+
+      // 選択状態切り替え
       container.querySelectorAll(".character").forEach(c => c.classList.remove("selected"));
       card.classList.add("selected");
       localStorage.setItem(`selectedChara${type}`, JSON.stringify(chara));
+
       updateNextButton();
-    });
 
-    // ===== 吹き出し制御 =====
-    let holdTimer;
-    let bubble;
-    let isHolding = false;
-
-    const showBubble = () => {
-      removeBubble();
-      bubble = document.createElement("div");
-      bubble.className = "profile-bubble active";
+      // 吹き出し生成
+      const bubble = document.createElement("div");
+      bubble.className = `profile-bubble active ${type === "A" ? "bubble-a" : "bubble-b"}`;
       bubble.innerHTML = `<strong>${chara.name}</strong><br>${chara.desc}`;
       document.body.appendChild(bubble);
 
-      // 位置計算
+      // 吹き出し位置計算
       const rect = card.getBoundingClientRect();
       const bubbleWidth = bubble.offsetWidth;
       const bubbleHeight = bubble.offsetHeight;
       bubble.style.left = `${rect.left + rect.width / 2 - bubbleWidth / 2}px`;
       bubble.style.top = `${rect.top - bubbleHeight - 10}px`;
-    };
-
-    const hideBubble = () => {
-      removeBubble();
-      isHolding = false;
-    };
-
-    // PC: 長押し代替（mousedown）
-    card.addEventListener("mousedown", () => {
-      holdTimer = setTimeout(() => {
-        showBubble();
-        isHolding = true;
-      }, 500);
-    });
-    card.addEventListener("mouseup", hideBubble);
-    card.addEventListener("mouseleave", hideBubble);
-
-    // スマホ: 長押し判定
-    card.addEventListener("touchstart", () => {
-      holdTimer = setTimeout(() => {
-        showBubble();
-        isHolding = true;
-      }, 500);
-    });
-    card.addEventListener("touchend", hideBubble);
-    card.addEventListener("touchmove", () => {
-      if (isHolding) hideBubble();
-      clearTimeout(holdTimer);
     });
 
     container.appendChild(card);
   });
 
-  // スマホ時のみ2.5個目を少し見せる位置にスクロール
+  // スクロール時に吹き出し削除
+  container.addEventListener("scroll", removeBubble);
+
+  // 初期スクロール位置（スマホ2.5個見せ）
   if (window.innerWidth < 768) {
     setTimeout(() => {
       const cardWidth = container.querySelector(".character")?.offsetWidth || 0;
@@ -109,7 +79,7 @@ function removeBubble() {
   if (existing) existing.remove();
 }
 
-// 選択状態を復元
+// 選択状態復元
 function restoreSelection() {
   ["A", "B"].forEach(type => {
     const data = localStorage.getItem(`selectedChara${type}`);
@@ -125,7 +95,7 @@ function restoreSelection() {
   });
 }
 
-// 「次へ」ボタンの有効/無効制御
+// 「次へ」ボタン制御
 function updateNextButton() {
   const btn = document.getElementById("nextBtn");
   const aSelected = localStorage.getItem("selectedCharaA");
