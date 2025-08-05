@@ -211,13 +211,12 @@ function resizeImage(file, maxSize = 512) {
 }
 
 // ===============================
-// 共有機能（iPhone Chrome対応＋フォールバック）
+// 共有機能（失敗時は保存にフォールバック）
 // ===============================
 async function shareCapture() {
   try {
     const target = document.getElementById("captureArea");
 
-    // キャプチャ生成
     const canvas = await html2canvas(target, {
       backgroundColor: "#ffffff",
       scale: 2
@@ -227,48 +226,57 @@ async function shareCapture() {
     const blob = await (await fetch(dataUrl)).blob();
     const file = new File([blob], "share.jpg", { type: "image/jpeg" });
 
-    // iPhone Chromeは file share 非対応 → 直接保存
-    const isIPhoneChrome = /CriOS/.test(navigator.userAgent);
-    if (isIPhoneChrome) {
-      downloadFallback(dataUrl);
-      return;
-    }
-
-    // Web Share API + ファイル共有可能
+    // --- まず共有を試す ---
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        files: [file],
-        title: "フォトコメント",
-        text: "写真とコメントを送ります"
-      });
-      triggerResetAnimation();
-      return;
+      try {
+        await navigator.share({
+          files: [file],
+          title: "フォトコメント",
+          text: "写真とコメントを送ります"
+        });
+        triggerResetAnimation();
+        return;
+      } catch (err) {
+        // 共有失敗 → メッセージ後に保存
+        alert("共有に失敗しました。代わりに画像を保存します。\nSafariをご利用いただくと共有が可能です。");
+        fallbackDownload(dataUrl);
+        return;
+      }
     }
 
-    // URL共有のみ可能
+    // --- URL共有のみ可能ならURL共有 ---
     if (navigator.share) {
-      await navigator.share({
-        title: "フォトコメント",
-        text: "写真とコメントを送ります",
-        url: dataUrl
-      });
-      triggerResetAnimation();
-      return;
+      try {
+        await navigator.share({
+          title: "フォトコメント",
+          text: "写真とコメントを送ります",
+          url: dataUrl
+        });
+        triggerResetAnimation();
+        return;
+      } catch (err) {
+        alert("共有に失敗しました。代わりに画像を保存します。\nSafariをご利用いただくと共有が可能です。");
+        fallbackDownload(dataUrl);
+        return;
+      }
     }
 
-    // それ以外 → ダウンロード
-    downloadFallback(dataUrl);
+    // --- 共有不可なら即保存 ---
+    fallbackDownload(dataUrl);
 
   } catch (error) {
     console.error("共有エラー:", error);
-    alert("共有に失敗しました");
+    alert("共有に失敗しました。代わりに画像を保存します。");
+    const target = document.getElementById("captureArea");
+    const canvas = await html2canvas(target, { backgroundColor: "#ffffff", scale: 2 });
+    fallbackDownload(canvas.toDataURL("image/jpeg", 0.8));
   }
 }
 
 // ===============================
-// ダウンロードフォールバック
+// 保存フォールバック関数
 // ===============================
-function downloadFallback(dataUrl) {
+function fallbackDownload(dataUrl) {
   const link = document.createElement("a");
   link.href = dataUrl;
   link.download = "share.jpg";
@@ -292,7 +300,7 @@ function triggerResetAnimation() {
 }
 
 // ===============================
-// UI初期化（スクロールリセット追加）
+// UI初期化（スクロールリセット付き）
 // ===============================
 function resetUI() {
   document.getElementById("imageInput").value = "";
@@ -310,5 +318,5 @@ function resetUI() {
   document.getElementById("resultBubbleB").classList.add("hidden");
 
   switchMode("A");
-  window.scrollTo(0, 0); // 共有後スクロールリセット
+  window.scrollTo(0, 0);
 }
