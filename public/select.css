@@ -181,3 +181,55 @@ h2 {
   outline: 2px solid #2196f3;
   outline-offset: 2px;
 }
+/* 吹き出し共通 */
+.profile-bubble {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  max-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* 表示状態 */
+.profile-bubble.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 矢印（共通ベース） */
+.profile-bubble::after {
+  content: "";
+  position: absolute;
+  border: 6px solid transparent;
+}
+
+/* A列 → 下に吹き出し、矢印は上 */
+.profile-bubble.bubble-a::after {
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: #ccc; /* 外枠色 */
+}
+
+/* B列 → 上に吹き出し、矢印は下 */
+.profile-bubble.bubble-b::after {
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  border-bottom-color: #ccc;
+}
+
+/* 枠色分け */
+.profile-bubble.bubble-a {
+  border-color: #2196f3;
+}
+.profile-bubble.bubble-b {
+  border-color: #4caf50;
+}
